@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools==83.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "health-coach-backend"
+version = "1.0.0"
+description = "Private Apple Health ingestion and read-only MCP service"
+readme = "README.md"
+requires-python = ">=3.14,<3.15"
+dependencies = [
+    "fastapi==0.139.2",
+    "mcp==1.28.1",
+    "pydantic==2.13.4",
+    "uvicorn==0.51.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "httpx==0.28.1",
+    "mypy==2.3.0",
+    "pytest==9.1.1",
+    "pytest-asyncio==1.4.0",
+    "ruff==0.15.22",
+]
+
+[project.scripts]
+health-coach = "health_coach.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["health_coach*"]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+asyncio_mode = "auto"
+testpaths = ["tests"]
+markers = [
+    "docker: requires an available Docker daemon",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.14"
+strict = true
+warn_unreachable = true
+packages = ["health_coach"]
+
